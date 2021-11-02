@@ -43,9 +43,8 @@ public class PlayerMouvement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.tag == "surface")
-        {
-            
+        if(collision.collider.CompareTag("surface"))
+        {            
             rb.AddForce(new Vector2(0, m_VerticalForce), ForceMode2D.Impulse);
             curledTail.SetActive(true);
             uncurledTail.SetActive(false);
