@@ -1,18 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Camera mainCamera;
+    public Transform player;
+    private Vector2 screenBounds;
+
     void Start()
     {
-        
+        mainCamera = gameObject.GetComponent<Camera>();
+        Vector3 position = new Vector3(Screen.width, Screen.height, mainCamera.transform.position.z);
+        screenBounds = mainCamera.ScreenToWorldPoint(position);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (player.position.y < transform.position.y - screenBounds.y)
+        {
+            GameOver();
+        }
+    }
+
+    void GameOver()
+    {
+        Debug.Log("GAME OVER!!!");
     }
 }
