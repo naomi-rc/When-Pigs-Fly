@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundLoop : MonoBehaviour
@@ -7,14 +5,13 @@ public class BackgroundLoop : MonoBehaviour
     public GameObject[] backgroundObjects;
     private Camera mainCamera;
     private Vector2 screenBounds;
+    public float choke;
    
     void Start()
     {
         mainCamera = gameObject.GetComponent<Camera>();
         Vector3 position = new Vector3(Screen.width, Screen.height, mainCamera.transform.position.z);
         screenBounds = mainCamera.ScreenToWorldPoint(position);
-        Debug.Log(position);
-        Debug.Log(screenBounds);
 
         foreach(GameObject obj in backgroundObjects)
         {
@@ -25,7 +22,7 @@ public class BackgroundLoop : MonoBehaviour
     void LoadChildObjects(GameObject obj)
     {
         //Height of current sprite
-        float objectHeight = obj.GetComponent<SpriteRenderer>().bounds.size.y;
+        float objectHeight = obj.GetComponent<SpriteRenderer>().bounds.size.y - choke;
         //Number of clones needed to fill width of screen
         int childrenNeeded = (int)Mathf.Ceil(screenBounds.y * 2 / objectHeight);
         //Clone objects for mold as reference
@@ -34,11 +31,7 @@ public class BackgroundLoop : MonoBehaviour
         {
             GameObject c = Instantiate(clone) as GameObject;
             c.transform.SetParent(obj.transform);
-            float x_position = obj.transform.position.x;
-           /* if (obj.CompareTag("clouds"))
-            {
-                x_position = Random.Range(-15, 5);
-            }*/
+            float x_position = obj.transform.position.x;           
             c.transform.position = new Vector3(x_position, objectHeight * i, obj.transform.position.z);
             c.name = obj.name + i;
         }
@@ -54,7 +47,7 @@ public class BackgroundLoop : MonoBehaviour
         {
             GameObject firstChild = children[1].gameObject;
             GameObject lastChild = children[children.Length - 1].gameObject;
-            float halfObjectHeight = lastChild.GetComponent<SpriteRenderer>().bounds.extents.y;
+            float halfObjectHeight = lastChild.GetComponent<SpriteRenderer>().bounds.extents.y - choke;
             if(transform.position.y + screenBounds.y > lastChild.transform.position.y + halfObjectHeight)
             {
                 firstChild.transform.SetAsLastSibling();

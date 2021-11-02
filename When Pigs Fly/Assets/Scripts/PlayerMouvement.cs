@@ -54,7 +54,6 @@ public class PlayerMouvement : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         Invoke("UncurlTail", uncurlTailDelay);
-        Debug.Log("COLLISION EXIT");
     }
 
     private void UncurlTail()
